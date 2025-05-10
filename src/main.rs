@@ -11,10 +11,18 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut enigo = Enigo::new(&Settings::default())?;
 
     let mut last_activity = Instant::now();
-    let timeout = Duration::from_secs(10);
+    let timeout = Duration::from_secs(30);
 
     println!("Monitoring for input events. Will simulate key press after 30 seconds of inactivity.");
     println!("Press Ctrl+C to exit.");
+
+    use std::process::Command;
+
+    let _ = Command::new("osascript")
+        .arg("-e")
+        .arg(r#"display dialog "休5分钟吧，电脑此时会被锁定" buttons {"OK"} default button "OK""#)
+        .status();
+
 
     loop {
         let mouse: MouseState = device_state.get_mouse();
